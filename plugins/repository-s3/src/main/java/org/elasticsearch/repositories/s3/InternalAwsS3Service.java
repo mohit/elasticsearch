@@ -131,8 +131,9 @@ class InternalAwsS3Service extends AbstractLifecycleComponent implements AwsS3Se
                 " must be accompanied by setting [" + S3Repository.ACCESS_KEY_SETTING.getKey() + "]");
         }
         if (credentials == null) {
-            logger.debug("Using instance profile credentials");
-            return new PrivilegedInstanceProfileCredentialsProvider();
+            logger.debug("Using default credentials provider");
+            // use the default credentials chain in case basic key/secret is not present
+            return new DefaultAWSCredentialsProviderChain();
         } else {
             logger.debug("Using basic key/secret credentials");
             return new StaticCredentialsProvider(credentials);
